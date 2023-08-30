@@ -2,10 +2,10 @@ package valorander
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"math/rand"
 
+	"github.com/bwmarrin/discordgo"
 	"github.com/go-resty/resty/v2"
 )
 
@@ -191,6 +191,7 @@ type PlayerResult struct {
 	PlayerName string
 	AgentName  string
 }
+
 type RandomResult []PlayerResult
 
 type Roulette struct {
@@ -261,20 +262,44 @@ func RandomFacade(pg PlayerGroup) (RandomResult, RandomResult) {
 	return r1.GetResult(), r2.GetResult()
 }
 
-func PrintDiscordResult(pg PlayerGroup) string {
+func GenerateTeamResult(pg PlayerGroup) *discordgo.MessageSend {
 	r1, r2 := RandomFacade(pg)
-	var result string
-	result += "ผลการสุ่ม Agent สำหรับทีมที่ 1 และ 2 ได้ตามนี้ครับ\n\n"
-	result += "ทีมที่ 1\n"
-	result += "------------------\n"
+	var embed1 []*discordgo.MessageEmbedField
 	for _, v := range r1 {
-		result += fmt.Sprintf("%s -> %s\n", v.PlayerName, v.AgentName)
+		embed1 = append(embed1,
+			&discordgo.MessageEmbedField{
+				Name:   "\n" + v.PlayerName,
+				Value:  v.AgentName,
+				Inline: false,
+			},
+		)
 	}
-	result += "\nทีมที่ 2\n"
-	result += "------------------\n"
+	var embed2 []*discordgo.MessageEmbedField
 	for _, v := range r2 {
-		result += fmt.Sprintf("%s -> %s\n", v.PlayerName, v.AgentName)
+		embed2 = append(embed2,
+			&discordgo.MessageEmbedField{
+				Name:   "\n" + v.PlayerName,
+				Value:  v.AgentName,
+				Inline: false,
+			},
+		)
 	}
-	result += "------------------\n"
-	return result
+
+	return &discordgo.MessageSend{
+		Content: "ผลการสุ่มทีม และ Agent\n",
+		Embeds: []*discordgo.MessageEmbed{
+			{
+				Title:       "📌  Team Left",
+				Description: "รายชื่อ Agent\n------------------------------",
+				Color:       0x83a598,
+				Fields:      embed1,
+			},
+			{
+				Title:       "📌  Team Right",
+				Description: "รายชื่อ Agent\n------------------------------",
+				Color:       0xd65d0e,
+				Fields:      embed2,
+			},
+		},
+	}
 }

@@ -73,11 +73,10 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		if len(msg) != 10 {
 			res := ""
-			res += fmt.Sprintf("[ข้อผิดพลาด] โปรดใส่ชื่อผู้เล่นให้พอดี 10 คน, คนละ 1 บรรทัดด้วยครับ ตอนนี้มี %d คน\n", len(msg))
-			res += fmt.Sprintln("----------------------")
+			res += fmt.Sprintf("โปรดใส่ชื่อผู้เล่นให้พอดี 10 คน, คนละ 1 บรรทัดด้วยครับ \n(ตอนนี้มี %d คน)\n", len(msg))
+			res += fmt.Sprintln("")
 			res += fmt.Sprintln("**ตัวอย่าง")
-			res += fmt.Sprintln("----------------------")
-			res += fmt.Sprintln("!random")
+			res += fmt.Sprintln("!team")
 			res += fmt.Sprintln("Bank")
 			res += fmt.Sprintln("Guy")
 			res += fmt.Sprintln("Jet")
@@ -88,13 +87,18 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			res += fmt.Sprintln("Ford")
 			res += fmt.Sprintln("Add")
 			res += fmt.Sprintln("Pi")
-			res += fmt.Sprintln("----------------------")
-
-			s.ChannelMessageSend(m.ChannelID, res)
+			res += fmt.Sprintln("")
+			s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+				Embed: &discordgo.MessageEmbed{
+					Title:       "⛔  ข้อผิดพลาด",
+					Description: res,
+					Color:       0x83a598,
+				},
+			})
 			return
 		}
 
-		result := valorander.PrintDiscordResult(valorander.PlayerGroup{
+		result := valorander.GenerateTeamResult(valorander.PlayerGroup{
 			P1:  msg[0],
 			P2:  msg[1],
 			P3:  msg[2],
@@ -106,7 +110,7 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			P9:  msg[8],
 			P10: msg[9],
 		})
-		_, _ = s.ChannelMessageSend(m.ChannelID, result)
+		_, _ = s.ChannelMessageSendComplex(m.ChannelID, result)
 	}
 }
 
@@ -126,18 +130,39 @@ func messageAgentHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			msg = append(msg, line)
 		}
 		if len(msg) != 1 {
-			res := fmt.Sprintln("[ข้อผิดพลาด] โปรดใส่ Role ที่ต้องการให้ Random ด้วยครับ")
-			res += fmt.Sprintln("----------------------")
+			res := fmt.Sprintln("โปรดใส่ Role ที่ต้องการให้ Random ด้วยครับ")
+			res += fmt.Sprintln("")
 			res += fmt.Sprintln("**ตัวอย่าง")
 			res += fmt.Sprintln("!agent controller")
-			res += fmt.Sprintln("----------------------")
 
-			s.ChannelMessageSend(m.ChannelID, res)
+			s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+				Embed: &discordgo.MessageEmbed{
+					Title:       "⛔  ข้อผิดพลาด",
+					Description: res,
+					Color:       0xcc241d,
+				},
+			})
 			return
 		}
 
-		result := valorander.RandomAgent(msg[0])
-		_, _ = s.ChannelMessageSend(m.ChannelID, result)
+		result, err := valorander.RandomAgent(msg[0])
+		if err != nil {
+			s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+				Embed: &discordgo.MessageEmbed{
+					Title:       "⛔  ข้อผิดพลาด",
+					Description: result,
+					Color:       0xcc241d,
+				},
+			})
+			return
+		}
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Title:       "📌 ผลการสุ่ม Agent",
+				Description: result,
+				Color:       0x83a598,
+			},
+		})
 	}
 }
 
