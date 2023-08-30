@@ -13,5 +13,6 @@ func RandomAgent(role string) string {
 	role_mapping := mapping[role]
 	idx := rand.Intn(role_mapping.Len())
 
-	return role_mapping.GetByIdx(idx)
+	result := "ผลการสุ่ม Agent: " + role_mapping.GetByIdx(idx)
+	return result
 }
