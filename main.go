@@ -50,12 +50,13 @@ func Start() *discordgo.Session {
 	}
 	BotId = u.ID
 
-	goBot.AddHandler(messageHandler)
+	goBot.AddHandler(messageTeamHandler)
+	goBot.AddHandler(messageAgentHandler)
 
 	return goBot
 }
 
-func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
+func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
@@ -105,6 +106,37 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			P9:  msg[8],
 			P10: msg[9],
 		})
+		_, _ = s.ChannelMessageSend(m.ChannelID, result)
+	}
+}
+
+func messageAgentHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
+	if m.Author.ID == s.State.User.ID {
+		return
+	}
+	if strings.HasPrefix(m.Content, "!agent") {
+		msg := make([]string, 0)
+		lines := strings.Split(m.Content, " ")
+		for idx, line := range lines {
+			if idx == 0 {
+				continue
+			}
+			// Trim any leading/trailing spaces
+			line = strings.TrimSpace(line)
+			msg = append(msg, line)
+		}
+		if len(msg) != 1 {
+			res := fmt.Sprintln("[ข้อผิดพลาด] โปรดใส่ Role ที่ต้องการให้ Random ด้วยครับ")
+			res += fmt.Sprintln("----------------------")
+			res += fmt.Sprintln("**ตัวอย่าง")
+			res += fmt.Sprintln("!agent controller")
+			res += fmt.Sprintln("----------------------")
+
+			s.ChannelMessageSend(m.ChannelID, res)
+			return
+		}
+
+		result := randomize.RandomAgent(msg[0])
 		_, _ = s.ChannelMessageSend(m.ChannelID, result)
 	}
 }
