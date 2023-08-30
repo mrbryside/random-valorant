@@ -290,13 +290,13 @@ func GenerateTeamResult(pg PlayerGroup) *discordgo.MessageSend {
 		Embeds: []*discordgo.MessageEmbed{
 			{
 				Title:       "📌  Team Left",
-				Description: "รายชื่อ Agent\n------------------------------",
+				Description: "รายชื่อ Agent\n                              ",
 				Color:       0x83a598,
 				Fields:      embed1,
 			},
 			{
 				Title:       "📌  Team Right",
-				Description: "รายชื่อ Agent\n------------------------------",
+				Description: "รายชื่อ Agent\n                              ",
 				Color:       0xd65d0e,
 				Fields:      embed2,
 			},
