@@ -92,7 +92,7 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				Embed: &discordgo.MessageEmbed{
 					Title:       "⛔  ข้อผิดพลาด",
 					Description: res,
-					Color:       0x83a598,
+					Color:       0xcc241d,
 				},
 			})
 			return
