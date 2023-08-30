@@ -60,7 +60,7 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	if strings.HasPrefix(m.Content, "!random") {
+	if strings.HasPrefix(m.Content, "!team") {
 		msg := make([]string, 0)
 		lines := strings.Split(m.Content, "\n")
 		for idx, line := range lines {
