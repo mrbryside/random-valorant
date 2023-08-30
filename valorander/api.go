@@ -1,4 +1,4 @@
-package randomize
+package valorander
 
 type Role struct {
 	DisplayName string `json:"displayName"`

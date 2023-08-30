@@ -1,4 +1,4 @@
-package randomize
+package valorander
 
 import "math/rand"
 

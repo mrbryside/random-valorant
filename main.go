@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/mrbryside/valorant-random/randomize"
+	"github.com/mrbryside/valorant-random/valorander"
 )
 
 var (
@@ -94,7 +94,7 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 
-		result := randomize.PrintDiscordResult(randomize.PlayerGroup{
+		result := valorander.PrintDiscordResult(valorander.PlayerGroup{
 			P1:  msg[0],
 			P2:  msg[1],
 			P3:  msg[2],
@@ -136,7 +136,7 @@ func messageAgentHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 
-		result := randomize.RandomAgent(msg[0])
+		result := valorander.RandomAgent(msg[0])
 		_, _ = s.ChannelMessageSend(m.ChannelID, result)
 	}
 }
