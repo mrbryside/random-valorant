@@ -44,10 +44,10 @@ var (
 			Name:     "Lotus",
 			ImageUrl: "https://static.wikia.nocookie.net/valorant/images/d/d0/Loading_Screen_Lotus.png/revision/latest/scale-to-width-down/1000?cb=20230106163526",
 		},
-		// {
-		// 	Name:     "Sunset",
-		// 	ImageUrl: "https://static.wikia.nocookie.net/valorant/images/5/5c/Loading_Screen_Sunset.png/revision/latest/scale-to-width-down/1000?cb=20230829125442",
-		// },
+		{
+			Name:     "Sunset",
+			ImageUrl: "https://static.wikia.nocookie.net/valorant/images/5/5c/Loading_Screen_Sunset.png/revision/latest/scale-to-width-down/1000?cb=20230829125442",
+		},
 	}
 )
 
