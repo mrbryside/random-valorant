@@ -52,6 +52,7 @@ func Start() *discordgo.Session {
 
 	goBot.AddHandler(messageTeamHandler)
 	goBot.AddHandler(messageAgentHandler)
+	goBot.AddHandler(messageMapHandler)
 
 	return goBot
 }
@@ -159,6 +160,23 @@ func messageAgentHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
 			Embed: &discordgo.MessageEmbed{
 				Title:       "📌 ผลการสุ่ม Agent",
+				Description: result,
+				Color:       0x83a598,
+			},
+		})
+	}
+}
+
+func messageMapHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
+	if m.Author.ID == s.State.User.ID {
+		return
+	}
+	if strings.HasPrefix(m.Content, "!map") {
+
+		result := valorander.RandomMap()
+		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+			Embed: &discordgo.MessageEmbed{
+				Title:       "📌 ผลการสุ่ม Map",
 				Description: result,
 				Color:       0x83a598,
 			},
