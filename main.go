@@ -146,13 +146,16 @@ func messageAgentHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 
-		result, err := valorander.RandomAgent(msg[0])
+		agent, image, imageIcon, err := valorander.RandomAgent(msg[0])
 		if err != nil {
 			s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
 				Embed: &discordgo.MessageEmbed{
 					Title:       "⛔  ข้อผิดพลาด",
-					Description: result,
+					Description: agent,
 					Color:       0xcc241d,
+					Image: &discordgo.MessageEmbedImage{
+						URL: image,
+					},
 				},
 			})
 			return
@@ -160,8 +163,14 @@ func messageAgentHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
 			Embed: &discordgo.MessageEmbed{
 				Title:       "📌 ผลการสุ่ม Agent",
-				Description: result,
+				Description: agent,
 				Color:       0x83a598,
+				// Image: &discordgo.MessageEmbedImage{
+				// 	URL: image,
+				// },
+				Thumbnail: &discordgo.MessageEmbedThumbnail{
+					URL: imageIcon,
+				},
 			},
 		})
 	}
@@ -177,8 +186,11 @@ func messageMapHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
 			Embed: &discordgo.MessageEmbed{
 				Title:       "📌 ผลการสุ่ม Map",
-				Description: result,
+				Description: result.Name,
 				Color:       0x83a598,
+				Image: &discordgo.MessageEmbedImage{
+					URL: result.ImageUrl,
+				},
 			},
 		})
 	}

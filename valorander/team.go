@@ -293,12 +293,18 @@ func GenerateTeamResult(pg PlayerGroup) *discordgo.MessageSend {
 				Description: "รายชื่อ Agent\n                              ",
 				Color:       0x83a598,
 				Fields:      embed1,
+				Thumbnail: &discordgo.MessageEmbedThumbnail{
+					URL: "https://www.valorantpicker.com/assets/imgs/navbar/v-logo-red.png",
+				},
 			},
 			{
 				Title:       "📌  Team Right",
 				Description: "รายชื่อ Agent\n                              ",
 				Color:       0xd65d0e,
 				Fields:      embed2,
+				Thumbnail: &discordgo.MessageEmbedThumbnail{
+					URL: "https://www.valorantpicker.com/assets/imgs/navbar/v-logo-red.png",
+				},
 			},
 		},
 	}
