@@ -49,6 +49,7 @@ func (p *PushPop) Contains(s string) bool {
 	for _, v := range p.data {
 		if v == s {
 			return true
+
 		}
 	}
 	return false
@@ -61,18 +62,18 @@ type Duelist PushPopAble
 type Player PushPopAble
 
 type Agent struct {
-	controller Controller
-	sentinel   Sentinel
-	initiator  Initiator
-	duelist    Duelist
+	Controller Controller
+	Sentinel   Sentinel
+	Initiator  Initiator
+	Duelist    Duelist
 }
 
 func NewAgent() Agent {
 	offlineAgent := Agent{
-		controller: &PushPop{data: []string{"Brimstone", "Harbor", "Omen", "Viper", "Astra"}},
-		sentinel:   &PushPop{data: []string{"Chamber", "Cypher", "Deadlock", "Killjoy", "Sage"}},
-		initiator:  &PushPop{data: []string{"Breach", "Fade", "Gekko", "Kay/o", "Skye", "Sova"}},
-		duelist:    &PushPop{data: []string{"Jett", "Neon", "Phoenix", "Raze", "Reyna", "Yoru"}},
+		Controller: &PushPop{data: []string{"Brimstone", "Harbor", "Omen", "Viper", "Astra"}},
+		Sentinel:   &PushPop{data: []string{"Chamber", "Cypher", "Deadlock", "Killjoy", "Sage"}},
+		Initiator:  &PushPop{data: []string{"Breach", "Fade", "Gekko", "Kay/o", "Skye", "Sova"}},
+		Duelist:    &PushPop{data: []string{"Jett", "Neon", "Phoenix", "Raze", "Reyna", "Yoru"}},
 	}
 	// fetch agent from api
 	client := resty.New()
@@ -81,7 +82,6 @@ func NewAgent() Agent {
 		log.Println("Error for fetch api:", err)
 		return offlineAgent
 	}
-
 	var agents AgentResList
 	if err := json.Unmarshal(resp.Body(), &agents); err != nil {
 		log.Println("Error unmarshal from fetch api:", err)
@@ -91,7 +91,6 @@ func NewAgent() Agent {
 	sentinel := make([]string, 0)
 	initiator := make([]string, 0)
 	duelist := make([]string, 0)
-
 	for _, agent := range agents.Data {
 		if agent.Role.DisplayName == "Controller" {
 			controller = append(controller, agent.DisplayName)
@@ -104,12 +103,11 @@ func NewAgent() Agent {
 		}
 	}
 	return Agent{
-		controller: &PushPop{data: controller},
-		sentinel:   &PushPop{data: sentinel},
-		initiator:  &PushPop{data: initiator},
-		duelist:    &PushPop{data: duelist},
+		Controller: &PushPop{data: controller},
+		Sentinel:   &PushPop{data: sentinel},
+		Initiator:  &PushPop{data: initiator},
+		Duelist:    &PushPop{data: duelist},
 	}
-
 }
 
 func (a *Agent) RandomRole() PushPopAble {
@@ -117,23 +115,23 @@ func (a *Agent) RandomRole() PushPopAble {
 	var result PushPopAble
 	switch idx {
 	case 0:
-		result = a.controller
+		result = a.Controller
 	case 1:
-		result = a.sentinel
+		result = a.Sentinel
 	case 2:
-		result = a.initiator
+		result = a.Initiator
 	case 3:
-		result = a.duelist
+		result = a.Duelist
 	}
 	return result
 }
 
 func (a *Agent) GetRandomList() []PushPopAble {
 	result := make([]PushPopAble, 0)
-	result = append(result, a.controller)
-	result = append(result, a.sentinel)
-	result = append(result, a.initiator)
-	result = append(result, a.duelist)
+	result = append(result, a.Controller)
+	result = append(result, a.Sentinel)
+	result = append(result, a.Initiator)
+	result = append(result, a.Duelist)
 	result = append(result, a.RandomRole())
 	return result
 }
@@ -146,7 +144,18 @@ type Team struct {
 	p5 string
 }
 
-func NewTeam(p1 string, p2 string, p3 string, p4 string, p5 string, p6 string, p7 string, p8 string, p9 string, p10 string) (Team, Team) {
+func NewTeam(
+	p1 string,
+	p2 string,
+	p3 string,
+	p4 string,
+	p5 string,
+	p6 string,
+	p7 string,
+	p8 string,
+	p9 string,
+	p10 string,
+) (Team, Team) {
 	mapping := map[int]string{
 		0: p1,
 		1: p2,
@@ -223,7 +232,10 @@ func (r *Roulette) RandomAgent() {
 		agent := list[idx]
 		rd := rand.Intn(agent.Len())
 		result := agent.Pop(rd)
-		pr := PlayerResult{PlayerName: player, AgentName: result}
+		pr := PlayerResult{
+			PlayerName: player,
+			AgentName:  result,
+		}
 		r.teamResult = append(r.teamResult, pr)
 	}
 }
@@ -233,7 +245,10 @@ func (r *Roulette) GetResult() RandomResult {
 }
 
 func NewRoulette(t Team) *Roulette {
-	return &Roulette{player: &PushPop{data: []string{t.p1, t.p2, t.p3, t.p4, t.p5}}, agent: NewAgent()}
+	return &Roulette{player: &PushPop{
+		data: []string{t.p1, t.p2, t.p3, t.p4, t.p5}},
+		agent: NewAgent(),
+	}
 }
 
 type PlayerGroup struct {
@@ -250,7 +265,18 @@ type PlayerGroup struct {
 }
 
 func RandomFacade(pg PlayerGroup) (RandomResult, RandomResult) {
-	t1, t2 := NewTeam(pg.P1, pg.P2, pg.P3, pg.P4, pg.P5, pg.P6, pg.P7, pg.P8, pg.P9, pg.P10)
+	t1, t2 := NewTeam(
+		pg.P1,
+		pg.P2,
+		pg.P3,
+		pg.P4,
+		pg.P5,
+		pg.P6,
+		pg.P7,
+		pg.P8,
+		pg.P9,
+		pg.P10,
+	)
 	// team 1
 	r1 := NewRoulette(t1)
 	r1.RandomPlayer()

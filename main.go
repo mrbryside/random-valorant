@@ -165,9 +165,6 @@ func messageAgentHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				Title:       "📌 ผลการสุ่ม Agent",
 				Description: agent,
 				Color:       0x83a598,
-				// Image: &discordgo.MessageEmbedImage{
-				// 	URL: image,
-				// },
 				Thumbnail: &discordgo.MessageEmbedThumbnail{
 					URL: imageIcon,
 				},

@@ -61,10 +61,10 @@ func RandomAgent(role string) (string, string, string, error) {
 	role = strings.ToLower(role)
 	agent := NewAgent()
 	mapping := map[string]PushPopAble{
-		"controller": agent.controller,
-		"sentinel":   agent.sentinel,
-		"initiator":  agent.initiator,
-		"duelist":    agent.duelist,
+		"controller": agent.Controller,
+		"sentinel":   agent.Sentinel,
+		"initiator":  agent.Initiator,
+		"duelist":    agent.Duelist,
 	}
 	role_mapping := mapping[role]
 	if role_mapping == nil {
