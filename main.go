@@ -63,6 +63,7 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	if strings.HasPrefix(m.Content, "!team") {
 		msg := make([]string, 0)
+		msg_mem := make(map[string]string)
 		lines := strings.Split(m.Content, "\n")
 		for idx, line := range lines {
 			if idx == 0 {
@@ -70,7 +71,18 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 			// Trim any leading/trailing spaces
 			line = strings.TrimSpace(line)
+			if msg_mem[line] != "" {
+				s.ChannelMessageSendComplex(m.ChannelID, &discordgo.MessageSend{
+					Embed: &discordgo.MessageEmbed{
+						Title:       "⛔  ข้อผิดพลาด",
+						Description: "มีชื่อผู้เล่นซ้ำกัน โปรดตรวจสอบชื่อผู้เล่นอีกครั้งครับ",
+						Color:       0xcc241d,
+					},
+				})
+				return
+			}
 			msg = append(msg, line)
+			msg_mem[line] = line
 		}
 		if len(msg) != 10 {
 			res := ""
