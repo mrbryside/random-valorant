@@ -81,6 +81,12 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				})
 				return
 			}
+			if strings.Contains(line, "@") {
+				s.ChannelMessageSend(m.ChannelID, "กวนตีนหรอนิว")
+			}
+			if strings.Contains(line, "#") {
+				s.ChannelMessageSend(m.ChannelID, "กวนตีนหรอนิว")
+			}
 			msg = append(msg, line)
 			msg_mem[line] = line
 		}
