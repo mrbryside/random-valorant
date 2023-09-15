@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -82,11 +83,29 @@ func messageTeamHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				return
 			}
 			if strings.Contains(line, "@") {
-				s.ChannelMessageSend(m.ChannelID, "กวนตีนหรอนิว")
+				rand_number := rand.Intn(3)
+				if rand_number == 0 {
+					s.ChannelMessageSend(m.ChannelID, "กวนเท้าหรอครับนิว")
+				}
+				if rand_number == 1 {
+					s.ChannelMessageSend(m.ChannelID, "เดะจะโดนตีนนะครับนิว")
+				}
+				if rand_number == 2 {
+					s.ChannelMessageSend(m.ChannelID, "ตลกหรอครับนิว")
+				}
 				return
 			}
 			if strings.Contains(line, "#") {
-				s.ChannelMessageSend(m.ChannelID, "กวนตีนหรอนิว")
+				rand_number := rand.Intn(3)
+				if rand_number == 0 {
+					s.ChannelMessageSend(m.ChannelID, "กวนเท้าหรอครับนิว")
+				}
+				if rand_number == 1 {
+					s.ChannelMessageSend(m.ChannelID, "เดะจะโดนตีนนะครับนิว")
+				}
+				if rand_number == 2 {
+					s.ChannelMessageSend(m.ChannelID, "ตลกหรอครับนิว")
+				}
 				return
 			}
 			msg = append(msg, line)
