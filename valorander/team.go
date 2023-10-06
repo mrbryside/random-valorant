@@ -76,13 +76,15 @@ func NewAgent() Agent {
 		Sentinel:   &PushPop{data: []string{"Chamber", "Cypher", "Deadlock", "Killjoy", "Sage"}},
 		Initiator:  &PushPop{data: []string{"Breach", "Fade", "Gekko", "Kay/o", "Skye", "Sova"}},
 		Duelist:    &PushPop{data: []string{"Jett", "Neon", "Phoenix", "Raze", "Reyna", "Yoru"}},
-		Flex:       &PushPop{data: []string{"Breach", "Fade", "Gekko", "Kay/o", "Skye", "Sova", "Chamber", "Cypher", "Deadlock", "Killjoy", "Sage", "Brimstone", "Harbor", "Omen", "Viper", "Astra", "Jett", "Neon", "Phoenix", "Raze", "Reyna", "Yoru"}},
+		Flex: &PushPop{data: []string{"Breach", "Fade", "Gekko", "Kay/o", "Skye", "Sova",
+			"Chamber", "Cypher", "Deadlock", "Killjoy", "Sage", "Brimstone", "Harbor", "Omen", "Viper",
+			"Astra", "Jett", "Neon", "Phoenix", "Raze", "Reyna", "Yoru"}},
 	}
 	// fetch agent from api
 	client := resty.New()
 	resp, err := client.R().Get("https://valorant-api.com/v1/agents")
 	if err != nil {
-		log.Println("Error for fetch api:", err)
+		log.Println("Error fetch api:", err)
 		return offlineAgent
 	}
 	var agents AgentResList
