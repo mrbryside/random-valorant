@@ -36,7 +36,7 @@ func ReadConfig() {
 		panic(err)
 	}
 
-	Token = os.Getenv("TOKEN")
+	Token = os.Getenv(config.Token)
 	BotPrefix = config.BotPrefix
 }
 
