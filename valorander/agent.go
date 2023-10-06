@@ -65,6 +65,7 @@ func RandomAgent(role string) (string, string, string, error) {
 		"sentinel":   agent.Sentinel,
 		"initiator":  agent.Initiator,
 		"duelist":    agent.Duelist,
+		"flex":       agent.Flex,
 	}
 	role_mapping := mapping[role]
 	if role_mapping == nil {

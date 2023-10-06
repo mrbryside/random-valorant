@@ -59,6 +59,7 @@ type Controller PushPopAble
 type Sentinel PushPopAble
 type Initiator PushPopAble
 type Duelist PushPopAble
+type Flex PushPopAble
 type Player PushPopAble
 
 type Agent struct {
@@ -66,6 +67,7 @@ type Agent struct {
 	Sentinel   Sentinel
 	Initiator  Initiator
 	Duelist    Duelist
+	Flex       Flex
 }
 
 func NewAgent() Agent {
@@ -74,6 +76,7 @@ func NewAgent() Agent {
 		Sentinel:   &PushPop{data: []string{"Chamber", "Cypher", "Deadlock", "Killjoy", "Sage"}},
 		Initiator:  &PushPop{data: []string{"Breach", "Fade", "Gekko", "Kay/o", "Skye", "Sova"}},
 		Duelist:    &PushPop{data: []string{"Jett", "Neon", "Phoenix", "Raze", "Reyna", "Yoru"}},
+		Flex:       &PushPop{data: []string{"Breach", "Fade", "Gekko", "Kay/o", "Skye", "Sova", "Chamber", "Cypher", "Deadlock", "Killjoy", "Sage", "Brimstone", "Harbor", "Omen", "Viper", "Astra", "Jett", "Neon", "Phoenix", "Raze", "Reyna", "Yoru"}},
 	}
 	// fetch agent from api
 	client := resty.New()
@@ -91,6 +94,7 @@ func NewAgent() Agent {
 	sentinel := make([]string, 0)
 	initiator := make([]string, 0)
 	duelist := make([]string, 0)
+	flex := make([]string, 0)
 	for _, agent := range agents.Data {
 		if agent.Role.DisplayName == "Controller" {
 			controller = append(controller, agent.DisplayName)
@@ -101,12 +105,14 @@ func NewAgent() Agent {
 		} else if agent.Role.DisplayName == "Duelist" {
 			duelist = append(duelist, agent.DisplayName)
 		}
+		flex = append(flex, agent.DisplayName)
 	}
 	return Agent{
 		Controller: &PushPop{data: controller},
 		Sentinel:   &PushPop{data: sentinel},
 		Initiator:  &PushPop{data: initiator},
 		Duelist:    &PushPop{data: duelist},
+		Flex:       &PushPop{data: flex},
 	}
 }
 
