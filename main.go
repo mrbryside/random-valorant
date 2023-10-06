@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"os"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -35,7 +36,7 @@ func ReadConfig() {
 		panic(err)
 	}
 
-	Token = config.Token
+	Token = os.Getenv("TOKEN")
 	BotPrefix = config.BotPrefix
 }
 
